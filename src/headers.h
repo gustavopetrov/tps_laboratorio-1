@@ -1,6 +1,13 @@
 #ifndef HEADERS_H_
 #define HEADERS_H_
-
+/**
+ * @brief => funcion que calcula promedios divide confederacion / totalJugadores
+ *
+ * @param confederacion recibe un contador (cada confederacion es un contador conmebol etc)
+ * @param totalJugadores (el total de jugadores)
+ * @return
+ */
+float calculadoraPromedios( int confederacion, int totalJugadores);
 /**
  * @brief
  * Pide un numero de tipo float, verifica que sea mayor a cero y de ser así lo retorna.
