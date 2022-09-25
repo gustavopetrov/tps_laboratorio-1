@@ -53,7 +53,7 @@ void mostrarCostos(float gastosHospedaje, float gastosComida, float gastosTransp
 {
 	printf("\n  Costo de hospedaje ->$%.2f ",gastosHospedaje);
 	printf("\n  Costo de comida ->$%.2f ",gastosComida);
-	printf("\n  Costo de transporte ->$%.2f\n ",gastosTransporte);
+	printf("\n  Costo de transporte ->$%.2f ",gastosTransporte);
 }
 
 void mostrarJugadores(int arqueros, int defensores, int medioCampistas, int delanteros)
@@ -445,6 +445,3 @@ void menuPrincipal (void){
 
 		}while(opcionMenuPrincipal != 5);
 }
-
-
-
