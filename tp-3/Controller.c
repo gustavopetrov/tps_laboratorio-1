@@ -177,7 +177,6 @@ int controller_agregarJugador(LinkedList* pArrayListJugador)
 		getString(edadAux, 100, "\nIngrese Edad", "\nERROR!");
 		getString(posicionAux, 100, "\nIngrese Posicion", "\nERROR!");
 		getString(nacionalidadAux, 100, "\nIngrese Nacionalidad","\nERROR!");
-		getString(idSeleccionAux, 100, "\nIngrese Seleccion", "\nERROR!");
 	unJugador = jug_newParametros(idAux, nombreAux, edadAux, posicionAux, nacionalidadAux, idSeleccionAux);
 	ll_add(pArrayListJugador, unJugador);
 	printf("Se agrego un jugador");

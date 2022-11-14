@@ -19,7 +19,7 @@
 int obtenerID()
 {
 	int id;
-	id = 371;
+	id = 370;
 	FILE * pArchivo;
 
 	pArchivo = fopen("listadoID.bin","rb");
