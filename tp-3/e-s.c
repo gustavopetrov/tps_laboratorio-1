@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "string.h"
+#include "inputs.h"
 
 /*-------inputs desde el buffer-------*/
 
@@ -127,7 +128,7 @@ int getChar(char* pCaracter, char* mensaje, char* mensajeError, char min, char m
 	return retorno;
 }
 										/*-------getString-------*/
-int getString(char string[], int sizeString, char* mensaje, char* mensajeError){
+int getStringAlpha(char string[], int sizeString, char* mensaje, char* mensajeError){
 	int retorno;
 	char buffer[1024];
 
@@ -152,7 +153,26 @@ int getString(char string[], int sizeString, char* mensaje, char* mensajeError){
 
 	return retorno;
 }
-										/*-------getShort-------*/
+int getStringNumber(char string[], int sizeString, char* mensaje, char* mensajeError)
+{
+
+	getStringAlpha(string, sizeString, mensaje, mensajeError);
+	while(esNumericaPositivos(string, sizeString) == 1)
+	{
+		getStringAlpha(string, sizeString, mensaje, mensajeError);
+	}
+	return 0;
+}
+int getString(char string[], int sizeString, char* mensaje, char* mensajeError)
+{
+	getStringAlpha(string, sizeString, mensaje, mensajeError);
+	while(isValidNombre(string, sizeString) == 0)
+	{
+		getStringAlpha(string, sizeString, mensaje, mensajeError);
+	}
+
+	return 0;
+}								/*-------getShort-------*/
 int getShort(short* pResultado, char* mensaje, char* mensajeError, short min, short max){
 	int retorno;
 	short numero;

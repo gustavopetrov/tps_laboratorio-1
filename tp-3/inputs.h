@@ -11,5 +11,6 @@
 int isValidNombre(char* cadena,int longitud);
 int esNumerica(char* cadena, int limite);
 int esFlotante(char* cadena, int limite);
+int esNumericaPositivos(char* cadena, int limite);
 
 #endif /* INPUTS_H_ */

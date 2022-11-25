@@ -56,6 +56,29 @@ int esNumerica(char* cadena, int limite)
 	 }
 	 return retorno;
  }
+int esNumericaPositivos(char* cadena, int limite)
+{
+	 int retorno;
+	 int i;
+	 retorno = 0; //error
+
+	 if( cadena != NULL && limite > 0)
+	 {
+		 for(i = 0; cadena[i] != '\0'; i++ )
+		 {
+			 if( i == 0 && (cadena[i] == '+'))
+			 {
+				 continue;
+			 }
+			 if(cadena[i] < '0' || cadena[i] > '9')
+			 {
+				 retorno = 1;
+				 break;
+			 }
+		 }
+	 }
+	 return retorno;
+ }
 int esFlotante(char* cadena, int limite)
 {
 	int retorno;

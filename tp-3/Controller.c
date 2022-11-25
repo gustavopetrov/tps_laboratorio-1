@@ -17,11 +17,19 @@
  */
 int controller_cargarJugadoresDesdeTexto(char* path , LinkedList* pArrayListJugador)
 {
-	FILE * pArchivo;
-	pArchivo = fopen(path,"r");
-	parser_JugadorFromText(pArchivo, pArrayListJugador);
-	fclose(pArchivo);
-    return 1;
+	int rtn;
+	rtn = 0;
+	if( path != NULL && pArrayListJugador != NULL)
+	{
+		FILE * pArchivo;
+		pArchivo = fopen(path,"r");
+		if(pArchivo != NULL)
+		{
+			rtn = parser_JugadorFromText(pArchivo, pArrayListJugador);
+			fclose(pArchivo);
+		}
+	}
+    return rtn;
 }
 
 /** \brief Carga los datos de los jugadores desde el archivo generado en modo binario.
@@ -50,7 +58,6 @@ int controller_cargarJugadoresDesdeBinario(char* path , LinkedList* pArrayListJu
 				break;
 			}
 			mostrarJugadorBinario(jugadorAux);
-
     	}
 
 
@@ -76,6 +83,7 @@ int controller_guardarJugadoresModoBinario(char* path , LinkedList* pArrayListJu
 	int tamNuevaLinkedList;
 	char confederacionAux[30];
 	char confederacionSeleccionAux[30];
+
 	id = idConfederacion(pArrayListJugador);
 	switch(id)
 	{
@@ -95,6 +103,7 @@ int controller_guardarJugadoresModoBinario(char* path , LinkedList* pArrayListJu
 		strcpy(confederacionAux,"UEFA");
 		break;
 	}
+
 	Jugador* jugadorAux;
 	Seleccion* seleccionAux;
 	int tamJugadores;
@@ -105,7 +114,9 @@ int controller_guardarJugadoresModoBinario(char* path , LinkedList* pArrayListJu
 
 	tamJugadores = ll_len(pArrayListJugador);
 	tamSelecciones = ll_len(pArrayListSeleccion);
-
+	printf("\n%d",tamJugadores);
+	printf("\n%d",tamSelecciones);
+	puts("\nhola");
 	for(int i = 0; i < tamJugadores; i++)
 	{
 		jugadorAux = (Jugador*)ll_get(pArrayListJugador, i);
@@ -134,11 +145,13 @@ int controller_guardarJugadoresModoBinario(char* path , LinkedList* pArrayListJu
 	if(pArchivo != NULL)
 	{
 		tamNuevaLinkedList = ll_len(listaJugadoresConvocadosPorConfederacion);
+			printf("%d",tamNuevaLinkedList);
 		for(int i = 0; i < tamNuevaLinkedList; i++)
 		{
 			jugadorAux = (Jugador*)ll_get(listaJugadoresConvocadosPorConfederacion, i);
 			fwrite(jugadorAux,sizeof(Jugador),1,pArchivo);
 			retorno = 1;
+			printf("\n Nombre: %s",jugadorAux->nombreCompleto);
 		}
 
 	}
@@ -174,12 +187,24 @@ int controller_agregarJugador(LinkedList* pArrayListJugador)
 		id = obtenerID();
 		sprintf(idAux,"%d",id);
 		getString(nombreAux, 100, "\nIngrese Nombre", "\nERROR!");
-		getString(edadAux, 100, "\nIngrese Edad", "\nERROR!");
-		getString(posicionAux, 100, "\nIngrese Posicion", "\nERROR!");
-		getString(nacionalidadAux, 100, "\nIngrese Nacionalidad","\nERROR!");
+		getStringNumber(edadAux, 100, "\nIngrese Edad", "\nERROR!");
+		getString(posicionAux, 100, "\nIngrese Posicion: "
+				"\nPortero - Defensa Central - Lateral Izquierdo - Lateral Derecho - Pivote \nMedio Centro - Extremo Izquierdo - Extremo Derecho - Media Punta - Delantero Central\n", "\nERROR!");
+		while(stricmp(posicionAux,"Portero") && stricmp(posicionAux,"Defensa Central") && stricmp(posicionAux,"Lateral Izquierdo") && stricmp(posicionAux,"Lateral Derecho") && stricmp(posicionAux,"Pivote") && stricmp(posicionAux,"Medio Centro") && stricmp(posicionAux,"Extremo Izquierdo") && stricmp(posicionAux,"Extremo Derecho") && stricmp(posicionAux,"Media Punta") && stricmp(posicionAux,"Delantero Central") )
+		{
+			getString(posicionAux, 100, "\nIngrese Posicion: "
+							"\nPortero - Defensa Central - Lateral Izquierdo - Lateral Derecho - Pivote \nMedio Centro - Extremo Izquierdo - Extremo Derecho - Media Punta - Delantero Central\n", "\nERROR!");
+		}
+
+		getString(nacionalidadAux, 100, "\nIngrese Posicion: "
+							"\nArgentino - Brasilero - Uruguayo - Portugués - Inglés - Alemán - Mexicano - Estadounidense - Cameunes - Senegales - Australiano - Qatarí \n", "\nERROR!");
+		while(stricmp(nacionalidadAux,"Argentino") && stricmp(nacionalidadAux,"Brasilero") && stricmp(nacionalidadAux,"Uruguayo") && stricmp(nacionalidadAux,"Inglés") && stricmp(nacionalidadAux,"Alemán") && stricmp(nacionalidadAux,"Mexicano") && stricmp(nacionalidadAux,"Estadounidense") && stricmp(nacionalidadAux,"Cameunes") && stricmp(nacionalidadAux,"Senegales") && stricmp(nacionalidadAux,"Australiano") && stricmp(nacionalidadAux,"Qatari") )
+		{
+			getString(nacionalidadAux, 100, "\nIngrese Posicion: "
+							"\nArgentino - Brasilero - Uruguayo - Portugués - Inglés - Alemán - Mexicano - Estadounidense - Cameunes - Senegales - Australiano - Qatarí \n", "\nERROR!");
+		}
 	unJugador = jug_newParametros(idAux, nombreAux, edadAux, posicionAux, nacionalidadAux, idSeleccionAux);
 	ll_add(pArrayListJugador, unJugador);
-	printf("Se agrego un jugador");
 	}
     return retorno;
 }
@@ -319,11 +344,16 @@ int controller_guardarSeleccionesModoTexto(char* path , LinkedList* pArrayListSe
  */
 int controller_cargarSeleccionesDesdeTexto(char* path , LinkedList* pArrayListSeleccion)
 {
-	FILE * pArchivo;
-	pArchivo = fopen(path, "r");
-	parser_SeleccionFromText(pArchivo, pArrayListSeleccion);
-	fclose(pArchivo);
-    return 1;
+	int rtn;
+	rtn = 0;
+	if(path != NULL && pArrayListSeleccion != NULL)
+	{
+		FILE * pArchivo;
+		pArchivo = fopen(path, "r");
+		rtn = parser_SeleccionFromText(pArchivo, pArrayListSeleccion);
+		fclose(pArchivo);
+	}
+    return rtn;
 }
 
 /** \brief Modificar datos de empleado
@@ -391,7 +421,55 @@ int controller_ordenarSelecciones(LinkedList* pArrayListSeleccion)
  *
  * @param pArrayListJugador
  */
-void controller_listarJugadoresConvocados(LinkedList* pArrayListJugador)
+void controller_listarJugadoresConvocados(LinkedList* pArrayListJugador,LinkedList* pArrayListSeleccion)
+{
+	Jugador* unJugador;
+	Seleccion* unaSeleccion;
+
+	int tam;
+	int tam_selec;
+	char nombreAux[NOMBRE_LEN];
+	char posicionAux[100];
+	char nacionalidadAux[100];
+	char idConfederacionAux[100];
+	int idConfederacion;
+	int edadAux;
+	int idSeleccionAux;
+	int idAux;
+
+
+	tam = ll_len(pArrayListJugador);
+	tam_selec = ll_len(pArrayListSeleccion);
+
+	for(int i = 0; i<tam; i++)
+	{
+		unJugador = (Jugador*)ll_get(pArrayListJugador, i);
+		jug_getSIdSeleccion(unJugador, &idSeleccionAux);
+		for(int j = 0; j < tam_selec; j++)
+		{
+			unaSeleccion = (Seleccion*)ll_get(pArrayListSeleccion, j);
+			selec_getId(unaSeleccion, &idConfederacion);
+
+			if(idSeleccionAux == idConfederacion)
+			{
+				selec_getConfederacion(unaSeleccion, idConfederacionAux);
+				break;
+			}
+		}
+		if( idSeleccionAux != 0)
+		{
+
+			jug_getNombreCompleto(unJugador, nombreAux);
+			jug_getPosicion(unJugador, posicionAux);
+			jug_getNacionalidad(unJugador, nacionalidadAux);
+			jug_getEdad(unJugador, &edadAux);
+			jug_getId(unJugador, &idAux);
+			printf("\n |%-2d |%-30s | %-25s | %-20s | %-2d | %-20s",idAux, nombreAux, posicionAux, nacionalidadAux, edadAux,idConfederacionAux);
+		}
+	}
+}
+
+void controller_listarJugadoresNoConvocados(LinkedList* pArrayListJugador)
 {
 	Jugador* unJugador;
 
@@ -402,15 +480,17 @@ void controller_listarJugadoresConvocados(LinkedList* pArrayListJugador)
 	char nacionalidadAux[100];
 	int edadAux;
 	int idSeleccionAux;
+	char nombreSeleccionJugadorAux[100] = "No Convocado";
 	int idAux;
 
 
 	tam = ll_len(pArrayListJugador);
 	for(int i = 0; i<tam; i++)
 	{
+		strcpy(nombreSeleccionJugadorAux,"No Convocado");
 		unJugador = (Jugador*)ll_get(pArrayListJugador, i);
 		jug_getSIdSeleccion(unJugador, &idSeleccionAux);
-		if( idSeleccionAux != 0)
+		if( idSeleccionAux == 0)
 		{
 
 			jug_getNombreCompleto(unJugador, nombreAux);
@@ -418,7 +498,7 @@ void controller_listarJugadoresConvocados(LinkedList* pArrayListJugador)
 			jug_getNacionalidad(unJugador, nacionalidadAux);
 			jug_getEdad(unJugador, &edadAux);
 			jug_getId(unJugador, &idAux);
-			printf("\n |%-2d |%-30s | %-25s | %-20s | %-2d",idAux, nombreAux, posicionAux, nacionalidadAux, edadAux);
+			printf("\n |%-2d |%-30s | %-25s | %-20s | %-2d | %-20s",idAux, nombreAux, posicionAux, nacionalidadAux, edadAux,nombreSeleccionJugadorAux);
 		}
 	}
 }
@@ -474,7 +554,7 @@ int controller_desconvocarJugador(LinkedList* pArrayListJugador, LinkedList* pAr
 	int iSeleccion;
 	int idNacionalidadAux = 0;
 	int cantConvocados;
-	controller_listarJugadoresConvocados(pArrayListJugador);
+	controller_listarJugadoresConvocados(pArrayListJugador,pArrayListSeleccion);
 	i=buscarIDLinkedList(pArrayListJugador);
 	jugadorAux = (Jugador*)ll_get(pArrayListJugador, i);
 	if(jug_getSIdSeleccion(jugadorAux, &idNacionalidadAux) == 0)

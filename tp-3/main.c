@@ -10,8 +10,10 @@ int main()
 	setbuf(stdout,NULL);
     int option;
     int opcionSalida;
+    int validacionMenu;
     int saveFlag; // 1 hay que guardar cambios 0 no hay que guardar
     saveFlag = 0;
+    validacionMenu = 0;
     LinkedList* listaJugadores = ll_newLinkedList();
     LinkedList* listaSelecciones = ll_newLinkedList();
     LinkedList* listaJugadoresAux = ll_newLinkedList();
@@ -33,127 +35,213 @@ int main()
         switch(option)
         {
             case 1:
-            	controller_cargarJugadoresDesdeTexto("jugadores.csv",listaJugadores);
-            	controller_cargarSeleccionesDesdeTexto("selecciones.csv",listaSelecciones);
+            	// ll_isEmpty(LinkedList* this) 1 si esta vacía, 0 si NO esta vacía
+            	if( ( ll_isEmpty(listaJugadores) && ll_isEmpty(listaSelecciones) ) == 1)
+            	{
+            		validacionMenu = 1;
+					controller_cargarJugadoresDesdeTexto("jugadores.csv",listaJugadores);
+					controller_cargarSeleccionesDesdeTexto("selecciones.csv",listaSelecciones);
+            	}else
+            	{
+            		puts("\nYa se cargaron los archivos...");
+            	}
+
                 break;
             case 2:
-            	saveFlag = controller_agregarJugador(listaJugadores);
+            	if(validacionMenu == 1)
+            	{
+            		saveFlag = controller_agregarJugador(listaJugadores);
+            		puts(" * Jugador DADO DE ALTA EXITOSAMENTE");
+            		system("pause");
+            	}else
+            	{
+            		puts("\nError, no se cargaron los archivos!");
+            	}
             	break;
             case 3:
-            	controller_listarJugadores(listaJugadores);
-            	if(controller_editarJugador(listaJugadores) == 0 )
+            	if(validacionMenu == 1)
             	{
-            		saveFlag = 1;
+					controller_listarJugadores(listaJugadores);
+					if(controller_editarJugador(listaJugadores) == 0 )
+					{
+						saveFlag = 1;
+						puts(" * Jugador EDITADO EXITOSAMENTE");
+						system("pause");
+					}
+            	}
+            	else{
+            		puts("\nError, no se cargaron los archivos!");
             	}
             	break;
             case 4:
-            	controller_listarJugadores(listaJugadores);
-            	if(controller_removerJugador(listaJugadores) == 0)
+            	if(validacionMenu == 1)
             	{
-            	saveFlag = 1;
+					controller_listarJugadores(listaJugadores);
+					if(controller_removerJugador(listaJugadores) == 0)
+					{
+						saveFlag = 1;
+						puts(" * Jugador DADO DE BAJA EXITOSAMENTE");
+						system("pause");
 
+					}
+            	}else
+            	{
+            		puts("\nError, no se cargaron los archivos!");
             	}
             	break;
             case 5:
-            	do{
-            	getInt(&option, "\n1.Listar-Jugadores"
-            			"\n2.Listar-Selecciones"
-            			"\n3.Listar-Convocados"
-            			"\n4.Salir", "\nERROR!", 1, 4);
+            	if(validacionMenu == 1)
+            	{
 
-            		switch(option)
-					{
-					case 1:
-						controller_listarJugadoresCustom(listaJugadores, listaSelecciones);
-						break;
-					case 2:
-						controller_listarSelecciones(listaSelecciones);
-						break;
-					case 3:
-						controller_listarJugadoresConvocados(listaJugadores);
-						break;
-					case 4:
-						break;
-					}
+					do{
+					getInt(&option, "\n1.Listar-Jugadores"
+							"\n2.Listar-Selecciones"
+							"\n3.Listar-Convocados"
+							"\n4.Salir", "\nERROR!", 1, 4);
 
-            	}while(option!=4);
+						switch(option)
+						{
+						case 1:
+							controller_listarJugadoresCustom(listaJugadores, listaSelecciones);
+							break;
+						case 2:
+							controller_listarSelecciones(listaSelecciones);
+							break;
+						case 3:
+							controller_listarJugadoresConvocados(listaJugadores, listaSelecciones);
+							break;
+						case 4:
+							break;
+						}
+
+					}while(option!=4);
+            	}else
+            	{
+            		puts("\nError, no se cargaron los archivos!");
+            	}
 
             	break;
             case 6:
-            	do{
+            	if(validacionMenu == 1)
+            	{
+					do{
 
-            		getInt(&option, "\n1.Convocar Jugador..."
-            				"\n2.Quitar de la Seleccion..."
-            				"\n3.Salir...", "\nERROR", 1, 3);
-            		switch(option)
-            		{
-            		case 1:
-            			if(controller_jugadoresConvocados(listaJugadores,listaSelecciones))
-            			{
-            				saveFlag = 1;
-            			}
-            			break;
-            		case 2:
-            			if(controller_desconvocarJugador(listaJugadores, listaSelecciones))
-            			{
-            				saveFlag = 1;
-            			}
-            			break;
-            		case 3:
-            			break;
-            		}
-            	}while(option !=3);
+						getInt(&option, "\n1.Convocar Jugador..."
+								"\n2.Quitar de la Seleccion..."
+								"\n3.Salir...", "\nERROR", 1, 3);
+						switch(option)
+						{
+						case 1:
+							controller_listarJugadoresNoConvocados(listaJugadores);
+							if(controller_jugadoresConvocados(listaJugadores,listaSelecciones))
+							{
+								saveFlag = 1;
+								puts(" * Jugador CONVOCADO EXITOSAMENTE");
+								system("pause");
+							}
+							break;
+						case 2:
+							if(controller_desconvocarJugador(listaJugadores, listaSelecciones))
+							{
+								saveFlag = 1;
+								puts(" * Jugador DESCONVOCADO EXITOSAMENTE");
+								system("pause");
+							}
+							break;
+						case 3:
+							break;
+						}
+					}while(option !=3);
+            	}else
+            	{
+            		puts("\nError, no se cargaron los archivos!");
+            	}
 
             	break;
             case 7:
-            	do
+            	if(validacionMenu == 1)
             	{
-            		getInt(&option, "\n1.Ordenar jugadores por nacionalidad"
-            				"\n2.Ordenar selecciones por confederacion"
-            				"\n3.Ordenar jugadores por Edad"
-            				"\n4.Ordenar jugadores por nombre"
-            				"\n5.Salir...", "\nError!", 1, 5);
-            		switch(option)
-            		{
-            		case 1:
-            			listaJugadoresAux = ll_clone(listaJugadores);
-            			ll_sort(listaJugadoresAux, controller_ordenarJugadoresNacionalidad,1);
-            			controller_listarJugadores(listaJugadoresAux);
-            			ll_deleteLinkedList(listaJugadoresAux);
-            			break;
-            		case 2:
-            			listaSeleccionesAux = ll_clone(listaSelecciones);
-						ll_sort(listaSeleccionesAux, controller_ordenarSeleccionesConfederacion,1);
-						controller_listarSelecciones(listaSeleccionesAux);
-						ll_deleteLinkedList(listaSeleccionesAux);
-            			break;
-            		case 3:
-            			listaJugadoresAux = ll_clone(listaJugadores);
-						ll_sort(listaJugadoresAux, controller_ordenarJugadoresPorEdad,1);
-						controller_listarJugadores(listaJugadoresAux);
-						ll_deleteLinkedList(listaJugadoresAux);
-            			break;
-            		case 4:
-            			listaJugadoresAux = ll_clone(listaJugadores);
-						ll_sort(listaJugadoresAux,controller_ordenarJugadoresNombre,1);
-						controller_listarJugadores(listaJugadoresAux);
-						ll_deleteLinkedList(listaJugadoresAux);
-            			break;
-            		case 5:
-            			break;
-            		}
-            	}while(option != 5);
+					do
+					{
+						getInt(&option, "\n1.Ordenar jugadores por nacionalidad"
+								"\n2.Ordenar selecciones por confederacion"
+								"\n3.Ordenar jugadores por Edad"
+								"\n4.Ordenar jugadores por nombre"
+								"\n5.Salir...", "\nError!", 1, 5);
+						switch(option)
+						{
+						case 1:
+							listaJugadoresAux = ll_clone(listaJugadores);
+							listaSeleccionesAux = ll_clone(listaSelecciones);
+							ll_sort(listaJugadoresAux, controller_ordenarJugadoresNacionalidad,1);
+							controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
+							ll_deleteLinkedList(listaJugadoresAux);
+							ll_deleteLinkedList(listaSeleccionesAux);
+							break;
+						case 2:
+							listaSeleccionesAux = ll_clone(listaSelecciones);
+							ll_sort(listaSeleccionesAux, controller_ordenarSeleccionesConfederacion,1);
+							controller_listarSelecciones(listaSeleccionesAux);
+							ll_deleteLinkedList(listaSeleccionesAux);
+							break;
+						case 3:
+							listaJugadoresAux = ll_clone(listaJugadores);
+							listaSeleccionesAux = ll_clone(listaSelecciones);
+							ll_sort(listaJugadoresAux, controller_ordenarJugadoresPorEdad,1);
+							controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
+							ll_deleteLinkedList(listaJugadoresAux);
+							ll_deleteLinkedList(listaSeleccionesAux);
+							break;
+						case 4:
+							listaJugadoresAux = ll_clone(listaJugadores);
+							listaSeleccionesAux = ll_clone(listaSelecciones);
+							ll_sort(listaJugadoresAux,controller_ordenarJugadoresNombre,1);
+							controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
+							ll_deleteLinkedList(listaJugadoresAux);
+							ll_deleteLinkedList(listaSeleccionesAux);
+							break;
+						case 5:
+							break;
+						}
+					}while(option != 5);
+            	}else
+            	{
+            		puts("\nError, no se cargaron los archivos!");
+            	}
 
             	break;
             case 8:
-            	controller_guardarJugadoresModoBinario("jugadoresConvocados.bin",listaJugadores,listaSelecciones);
+            	if(validacionMenu == 1)
+            	{
+            		controller_guardarJugadoresModoBinario("jugadoresConvocados.bin",listaJugadores,listaSelecciones);
+            		puts(" * Guardado de jugadores exitoso!");
+					system("pause");
+            	}else
+            	{
+            		puts("\nError, no se cargaron los archivos!");
+            	}
             	break;
             case 9:
-            	controller_cargarJugadoresDesdeBinario("jugadoresConvocados.bin",listaJugadores);
+            	if(validacionMenu == 1)
+            	{
+					controller_cargarJugadoresDesdeBinario("jugadoresConvocados.bin",listaJugadores);
+					puts(" * Se genero el archivo binario!");
+					system("pause");
+            	}else
+            	{
+            		puts("\nError, no se cargaron los archivos!");
+            	}
             	break;
             case 10:
-            	controller_guardarJugadoresModoTexto("jugadores.csv", listaJugadores);
-            	controller_guardarSeleccionesModoTexto("selecciones.csv",listaSelecciones);
+            	if(validacionMenu == 1)
+            	{
+					controller_guardarJugadoresModoTexto("jugadores.csv", listaJugadores);
+					controller_guardarSeleccionesModoTexto("selecciones.csv",listaSelecciones);
+					saveFlag = 0;
+            	}else
+            	{
+            		puts("\nError, no se cargaron los archivos!");
+            	}
             	break;
             case 11:
             	if(saveFlag == 1)

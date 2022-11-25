@@ -405,9 +405,15 @@ int modificarPosicion(LinkedList* pArrayListJugador, int i)
 {
 	int rta;
 	Jugador* jugadorAux;
-	char posicionAux[30];
+	char posicionAux[100];
 	jugadorAux = (Jugador*)ll_get(pArrayListJugador, i);
-	getString(posicionAux, 30, "\nIngrese posicion", "\nERROR!");
+	getString(posicionAux, 100, "\nIngrese Posicion: "
+					"\nPortero - Defensa Central - Lateral Izquierdo - Lateral Derecho - Pivote \nMedio Centro - Extremo Izquierdo - Extremo Derecho - Media Punta - Delantero Central\n", "\nERROR!");
+	while(stricmp(posicionAux,"Portero") && stricmp(posicionAux,"Defensa Central") && stricmp(posicionAux,"Lateral Izquierdo") && stricmp(posicionAux,"Lateral Derecho") && stricmp(posicionAux,"Pivote") && stricmp(posicionAux,"Medio Centro") && stricmp(posicionAux,"Extremo Izquierdo") && stricmp(posicionAux,"Extremo Derecho") && stricmp(posicionAux,"Media Punta") && stricmp(posicionAux,"Delantero Central") )
+	{
+		getString(posicionAux, 100, "\nIngrese Posicion: "
+						"\nPortero - Defensa Central - Lateral Izquierdo - Lateral Derecho - Pivote \nMedio Centro - Extremo Izquierdo - Extremo Derecho - Media Punta - Delantero Central\n", "\nERROR!");
+	}
 	jug_setPosicion(jugadorAux, posicionAux);
 	rta =ll_set(pArrayListJugador, i, jugadorAux);
 	return rta;
@@ -424,9 +430,15 @@ int modificarNacionalidad(LinkedList* pArrayListJugador, int i)
 {
 	int rta;
 	Jugador* jugadorAux;
-	char nacionalidadAux[30];
+	char nacionalidadAux[100];
 	jugadorAux = (Jugador*)ll_get(pArrayListJugador, i);
-	getString(nacionalidadAux, 30, "\nIngrese nacionalidad", "\nError!");
+	getString(nacionalidadAux, 100, "\nIngrese Posicion: "
+								"\nArgentino - Brasilero - Uruguayo - Portugués - Inglés - Alemán - Mexicano - Estadounidense - Cameunes - Senegales - Australiano - Qatarí \n", "\nERROR!");
+	while(stricmp(nacionalidadAux,"Argentino") && stricmp(nacionalidadAux,"Brasilero") && stricmp(nacionalidadAux,"Uruguayo") && stricmp(nacionalidadAux,"Inglés") && stricmp(nacionalidadAux,"Alemán") && stricmp(nacionalidadAux,"Mexicano") && stricmp(nacionalidadAux,"Estadounidense") && stricmp(nacionalidadAux,"Cameunes") && stricmp(nacionalidadAux,"Senegales") && stricmp(nacionalidadAux,"Australiano") && stricmp(nacionalidadAux,"Qatari") )
+	{
+		getString(nacionalidadAux, 100, "\nIngrese Posicion: "
+						"\nArgentino - Brasilero - Uruguayo - Portugués - Inglés - Alemán - Mexicano - Estadounidense - Cameunes - Senegales - Australiano - Qatarí \n", "\nERROR!");
+	}
 	jug_setNacionalidad(jugadorAux, nacionalidadAux);
 	rta = ll_set(pArrayListJugador, i, jugadorAux);
 	return rta;

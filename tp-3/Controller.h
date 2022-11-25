@@ -15,7 +15,8 @@ int controller_ordenarSelecciones(LinkedList* pArrayListSeleccion);
 int controller_guardarSeleccionesModoTexto(char* path , LinkedList* pArrayListSeleccion);
 
 							/*-----personalizadas-----*/
-int controller_listarJugadoresConvocados(LinkedList* pArrayListJugador);
+void controller_listarJugadoresConvocados(LinkedList* pArrayListJugador,LinkedList* pArrayListSeleccion);
+void controller_listarJugadoresNoConvocados(LinkedList* pArrayListJugador);
 int controller_jugadoresConvocados(LinkedList* pArrayListJugador, LinkedList* pArrayListSeleccion);
 int controller_desconvocarJugador(LinkedList* pArrayListJugador, LinkedList* pArrayListSeleccion);
 int controller_listarJugadoresCustom(LinkedList* pArrayListJugador, LinkedList* pArrayListSeleccion);
