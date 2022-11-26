@@ -495,22 +495,7 @@ int menuModificacionJugadores(LinkedList* pArrayListJugador, int i)
 	}
 	return rta;
 }
-/**
- * @brief recibe el índice al jugador que se desea eliminar y libera espacio en memoria
- *
- * @param pArrayListJugador
- * @param i
- * @return
- */
-int menuRemoverJugador(LinkedList* pArrayListJugador, int i)
-{
-	int rta;
-	Jugador* jugadorAux;
-	jugadorAux = (Jugador*)ll_get(pArrayListJugador, i);
-	rta = ll_remove(pArrayListJugador, i);
-	free(jugadorAux);
-	return rta;
-}
+
 
 					/*----------6.A----------*/
 /**

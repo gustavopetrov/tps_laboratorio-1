@@ -224,7 +224,33 @@ int controller_editarJugador(LinkedList* pArrayListJugador)
 	rta = menuModificacionJugadores(pArrayListJugador, i);
     return rta;
 }
-
+/**
+ * @brief recibe el índice al jugador que se desea eliminar y libera espacio en memoria
+ *
+ * @param pArrayListJugador
+ * @param i
+ * @return
+ */
+int menuRemoverJugador(LinkedList* pArrayListJugador, int i,LinkedList* pArrayListSeleccion)
+{
+	int rta;
+	int iSeleccion;
+	int cantConvocados;
+	Jugador* jugadorAux;
+	Seleccion* seleccionAux;
+	jugadorAux = (Jugador*)ll_get(pArrayListJugador, i);
+	jug_getSIdSeleccion(jugadorAux, &iSeleccion);
+	iSeleccion = buscarIDSeleccionLinkedList(pArrayListSeleccion, iSeleccion);
+	seleccionAux = (Seleccion*)ll_get(pArrayListSeleccion,iSeleccion);
+	selec_getConvocados(seleccionAux, &cantConvocados);
+	printf("\n convocados antes de restar %i",cantConvocados);
+	cantConvocados--;
+	selec_setConvocados(seleccionAux, cantConvocados);
+	printf("\n convocados después de restar %i",cantConvocados);
+	rta = ll_remove(pArrayListJugador, i);
+	free(jugadorAux);
+	return rta;
+}
 /** \brief Baja del jugador
  *
  * \param path char*
@@ -232,12 +258,12 @@ int controller_editarJugador(LinkedList* pArrayListJugador)
  * \return int
  *
  */
-int controller_removerJugador(LinkedList* pArrayListJugador)
+int controller_removerJugador(LinkedList* pArrayListJugador,LinkedList* pArrayListSeleccion)
 {
 	int rta;
 	int i;
 	i = buscarIDLinkedList(pArrayListJugador);
-	rta = menuRemoverJugador(pArrayListJugador, i);
+	rta = menuRemoverJugador(pArrayListJugador, i,pArrayListSeleccion);
 
     return rta;
 }
@@ -663,15 +689,21 @@ int controller_ordenarJugadoresNacionalidad(void* jugadorActual, void* siguiente
 	char jugadorSiguienteNacionalidad[30];
 	jugadorSiguienteAux = (Jugador*)siguienteJugador;
 	jugadorActualAux = (Jugador*)jugadorActual;
-	retorno = 0;
+	retorno = -1;
 
 	jug_getNacionalidad(jugadorActualAux, jugadorActualNacionalidad);
 	jug_getNacionalidad(jugadorSiguienteAux, jugadorSiguienteNacionalidad);
 
-	if(strcmp(jugadorActualNacionalidad,jugadorSiguienteNacionalidad) > 0)
-	{
-		retorno = 1;
-	}
+		if(stricmp(jugadorActualNacionalidad,jugadorSiguienteNacionalidad) > 0)
+			{
+				retorno = 1;
+			}else
+			{
+				if( stricmp(jugadorActualNacionalidad,jugadorSiguienteNacionalidad) == 0){
+					retorno = 0;
+				}
+
+			}
 
 	return retorno;
 }
@@ -685,7 +717,7 @@ int controller_ordenarJugadoresNacionalidad(void* jugadorActual, void* siguiente
 int controller_ordenarJugadoresPorEdad(void* jugadorActual, void* siguienteJugador)
 {
 	int retorno;
-	retorno = 0;
+	retorno = -1;
 
 	Jugador* jugadorActualAux;
 	int jugadorActualEdad;
@@ -698,6 +730,10 @@ int controller_ordenarJugadoresPorEdad(void* jugadorActual, void* siguienteJugad
 	if(jugadorActualEdad > jugadorSiguienteEdad)
 	{
 		retorno = 1;
+	}else
+	{
+		if(jugadorActualEdad == jugadorSiguienteEdad)
+		retorno = 0;
 	}
 
 
@@ -713,13 +749,13 @@ int controller_ordenarJugadoresPorEdad(void* jugadorActual, void* siguienteJugad
 int controller_ordenarJugadoresNombre(void* jugadorActual, void* siguienteJugador)
 {
 	int retorno;
+	retorno = -1;
 	Jugador* jugadorActualAux;
 	char jugadorActualNombre[NOMBRE_LEN];
 	Jugador* jugadorSiguienteAux;
 	jugadorSiguienteAux = (Jugador*)siguienteJugador;
 	jugadorActualAux = (Jugador*)jugadorActual;
 	char jugadorSiguienteNombre[NOMBRE_LEN];
-	retorno = 0;
 
 	jug_getNombreCompleto(jugadorActualAux, jugadorActualNombre);
 	jug_getNombreCompleto(jugadorSiguienteAux, jugadorSiguienteNombre);
@@ -727,6 +763,12 @@ int controller_ordenarJugadoresNombre(void* jugadorActual, void* siguienteJugado
 	if(stricmp(jugadorActualNombre,jugadorSiguienteNombre) > 0)
 	{
 		retorno = 1;
+	}
+	else{
+		if(stricmp(jugadorActualNombre,jugadorSiguienteNombre) == 0)
+		{
+			retorno = 0;
+		}
 	}
 
 	return retorno;
@@ -741,6 +783,7 @@ int controller_ordenarJugadoresNombre(void* jugadorActual, void* siguienteJugado
 int controller_ordenarSeleccionesConfederacion(void* seleccionActual, void* siguienteSeleccion)
 {
 	int retorno;
+	retorno = -1;
 	Seleccion* seleccionActualAux;
 	char seleccionActualConfederacion[30];
 	Seleccion* siguienteSeleccionAux;
@@ -751,9 +794,15 @@ int controller_ordenarSeleccionesConfederacion(void* seleccionActual, void* sigu
 	selec_getConfederacion(seleccionActualAux, seleccionActualConfederacion);
 	selec_getConfederacion(siguienteSeleccionAux, siguienteSeleccionConfederacion);
 
-	if(strcmp(seleccionActualConfederacion,siguienteSeleccionConfederacion) > 0)
+	if(stricmp(seleccionActualConfederacion,siguienteSeleccionConfederacion) > 0)
 	{
 		retorno = 1;
+	}else
+	{
+		if(stricmp(seleccionActualConfederacion,siguienteSeleccionConfederacion) == 0)
+		{
+			retorno = 0;
+		}
 	}
 
 	return retorno;

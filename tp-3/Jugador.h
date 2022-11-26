@@ -46,7 +46,6 @@ int modificarPosicion(LinkedList* pArrayListJugador, int i);
 int modificarNacionalidad(LinkedList* pArrayListJugador, int i);
 int modificarIdSeleccion(Jugador* jugadorAux, int idSeleccionAux);
 int menuModificacionJugadores(LinkedList* pArrayListJugador, int i);
-int menuRemoverJugador(LinkedList* pArrayListJugador, int i);
 int mostrarUnJugador(Jugador* unJugador);
 int idConfederacion(LinkedList* pArrayListJugador);
 void mostrarJugadorBinario(Jugador* unJugador);

@@ -9,6 +9,7 @@ int main()
 {
 	setbuf(stdout,NULL);
     int option;
+    int criterioOrdenamiento;
     int opcionSalida;
     int validacionMenu;
     int saveFlag; // 1 hay que guardar cambios 0 no hay que guardar
@@ -77,7 +78,7 @@ int main()
             	if(validacionMenu == 1)
             	{
 					controller_listarJugadores(listaJugadores);
-					if(controller_removerJugador(listaJugadores) == 0)
+					if(controller_removerJugador(listaJugadores,listaSelecciones) == 0)
 					{
 						saveFlag = 1;
 						puts(" * Jugador DADO DE BAJA EXITOSAMENTE");
@@ -159,6 +160,18 @@ int main()
 
             	break;
             case 7:
+            	/*
+            	 * criterioDeOrdenamiento = -1; //PEDIR CRITERIO DE ORDENAMIENTO
+					getInt(&criterioDeOrdenamiento, "\nCriterio de ordenamiento:"
+							"\n -1 -> ordenamiento ascendente (Menor a Mayor) "
+							"\n 1 -> ordenamiento descendente (Mayor a Menor) ", "\nError!", -1, 1);
+					while(criterioDeOrdenamiento == 0)
+					{
+						getInt(&criterioDeOrdenamiento, "\nCriterio de ordenamiento:"
+											"\n -1 -> ordenamiento ascendente (Menor a Mayor) "
+											"\n 1 -> ordenamiento descendente (Mayor a Menor) ", "\nError!", -1, 1);
+					}
+            	 * */
             	if(validacionMenu == 1)
             	{
 					do
@@ -168,37 +181,61 @@ int main()
 								"\n3.Ordenar jugadores por Edad"
 								"\n4.Ordenar jugadores por nombre"
 								"\n5.Salir...", "\nError!", 1, 5);
+						getInt(&criterioOrdenamiento, "\nCriterio de ordenamiento:"
+														"\n 0 -> ordenamiento ascendente (Menor a Mayor) "
+														"\n 1 -> ordenamiento descendente (Mayor a Menor)"
+														"\n 2 -> salir...\n", "\nError!", 0, 2);
 						switch(option)
 						{
 						case 1:
-							listaJugadoresAux = ll_clone(listaJugadores);
-							listaSeleccionesAux = ll_clone(listaSelecciones);
-							ll_sort(listaJugadoresAux, controller_ordenarJugadoresNacionalidad,1);
-							controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
-							ll_deleteLinkedList(listaJugadoresAux);
-							ll_deleteLinkedList(listaSeleccionesAux);
+
+
+								if(criterioOrdenamiento != 2)
+								{
+									listaJugadoresAux = ll_clone(listaJugadores);
+									listaSeleccionesAux = ll_clone(listaSelecciones);
+									ll_sort(listaJugadoresAux, controller_ordenarJugadoresNacionalidad,criterioOrdenamiento);
+									controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
+									ll_deleteLinkedList(listaJugadoresAux);
+									ll_deleteLinkedList(listaSeleccionesAux);
+								}
+
+
 							break;
 						case 2:
-							listaSeleccionesAux = ll_clone(listaSelecciones);
-							ll_sort(listaSeleccionesAux, controller_ordenarSeleccionesConfederacion,1);
-							controller_listarSelecciones(listaSeleccionesAux);
-							ll_deleteLinkedList(listaSeleccionesAux);
+
+								if(criterioOrdenamiento != 2)
+								{
+									listaSeleccionesAux = ll_clone(listaSelecciones);
+									ll_sort(listaSeleccionesAux, controller_ordenarSeleccionesConfederacion,criterioOrdenamiento);
+									controller_listarSelecciones(listaSeleccionesAux);
+									ll_deleteLinkedList(listaSeleccionesAux);
+								}
+
+
 							break;
 						case 3:
-							listaJugadoresAux = ll_clone(listaJugadores);
-							listaSeleccionesAux = ll_clone(listaSelecciones);
-							ll_sort(listaJugadoresAux, controller_ordenarJugadoresPorEdad,1);
-							controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
-							ll_deleteLinkedList(listaJugadoresAux);
-							ll_deleteLinkedList(listaSeleccionesAux);
+							if(criterioOrdenamiento != 2)
+							{
+								listaJugadoresAux = ll_clone(listaJugadores);
+								listaSeleccionesAux = ll_clone(listaSelecciones);
+								ll_sort(listaJugadoresAux, controller_ordenarJugadoresPorEdad,criterioOrdenamiento);
+								controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
+								ll_deleteLinkedList(listaJugadoresAux);
+								ll_deleteLinkedList(listaSeleccionesAux);
+							}
+
 							break;
 						case 4:
-							listaJugadoresAux = ll_clone(listaJugadores);
-							listaSeleccionesAux = ll_clone(listaSelecciones);
-							ll_sort(listaJugadoresAux,controller_ordenarJugadoresNombre,1);
-							controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
-							ll_deleteLinkedList(listaJugadoresAux);
-							ll_deleteLinkedList(listaSeleccionesAux);
+							if(criterioOrdenamiento != 2)
+							{
+								listaJugadoresAux = ll_clone(listaJugadores);
+								listaSeleccionesAux = ll_clone(listaSelecciones);
+								ll_sort(listaJugadoresAux,controller_ordenarJugadoresNombre,criterioOrdenamiento);
+								controller_listarJugadoresCustom(listaJugadoresAux, listaSeleccionesAux);
+								ll_deleteLinkedList(listaJugadoresAux);
+								ll_deleteLinkedList(listaSeleccionesAux);
+							}
 							break;
 						case 5:
 							break;
