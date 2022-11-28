@@ -15,14 +15,15 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement);
  */
 LinkedList* ll_newLinkedList(void)
 {
-    LinkedList* this= NULL;
-    this = (LinkedList*)malloc(sizeof(LinkedList));
-    if(this != NULL)
-    {
-    	this->size = 0;
-    	this->pFirstNode = NULL;
-    }
-    return this;
+	LinkedList* this= NULL;
+	this = (LinkedList*)malloc(sizeof(LinkedList));
+	if(this != NULL)
+	{
+		this->size = 0;
+		this->pFirstNode = NULL;
+	}
+	return this;
+
 }
 
 /** \brief Retorna la cantidad de elementos de la lista
@@ -38,6 +39,7 @@ int ll_len(LinkedList* this)
     {
     	returnAux = this->size;
     }
+
     return returnAux;
 }
 
@@ -55,16 +57,15 @@ static Node* getNode(LinkedList* this, int nodeIndex)
 	Node* auxNode;
 	auxNode = NULL;
 	int tam;
-	tam = ll_len(this);
-
 	if(this != NULL)
 	{
-		if(nodeIndex >= 0 && nodeIndex <= tam)
+		tam = this->size;
+		if(nodeIndex >= 0 && nodeIndex < tam)
 		{
 			auxNode = this->pFirstNode;
 			if(auxNode != NULL)
 			{
-				for(int i = 0; i < nodeIndex; i++)
+				for( int i = 0; i < nodeIndex; i++)
 				{
 					auxNode = auxNode->pNextNode;
 				}
@@ -119,8 +120,8 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement)
 			else
 			{
 				auxNode = getNode(this, nodeIndex-1);
-				nodo->pNextNode = auxNode->pNextNode;
-				auxNode->pNextNode = nodo;
+				nodo->pNextNode = auxNode->pNextNode; //El pNextNode del nodo que me cree apunta al pNextNode del nodo que me traje con el getNode.
+				auxNode->pNextNode = nodo; // El nodo que me traje con el getNode apunta al nodo que cree
 			}
 			nodo->pElement = pElement;
 			this->size++;
@@ -389,28 +390,12 @@ int ll_push(LinkedList* this, int index, void* pElement)
 {
     int returnAux = -1;
     int tam;
-    int rta;
-//    Node* nodoAux;
-//    Node* nodoAnterior;
-//    nodoAux = getNode(this, index);
-//    nodoAnterior = getNode(this, index-1);
     tam = ll_len(this);
     if(this != NULL)
     {
     	if(index >= 0 && index <= tam)
     	{
-    		for(int i = 0; i < tam; i++)
-    		{
-    			if(index == i)
-    			{
-    				rta = ll_add(this, pElement);
-    				if(rta == 0)
-    				{
-    				returnAux = 0;
-    				break;
-    				}
-    			}
-    		}
+    		returnAux = addNode(this, index, pElement);
     	}
     }
 
@@ -429,7 +414,23 @@ int ll_push(LinkedList* this, int index, void* pElement)
 void* ll_pop(LinkedList* this,int index)
 {
     void* returnAux = NULL;
+    int tam = ll_len(this);
+    Node* auxNode;
+    auxNode = NULL;
 
+    if(this != NULL)
+    {
+    	if(index >= 0 && index <= tam)
+    	{
+    		auxNode = getNode(this, index);
+    		if(auxNode != NULL)
+    		{
+				returnAux = auxNode->pElement;
+				ll_remove(this, index);
+				free(auxNode);
+    		}
+    	}
+    }
     return returnAux;
 }
 
@@ -445,6 +446,23 @@ void* ll_pop(LinkedList* this,int index)
 int ll_contains(LinkedList* this, void* pElement)
 {
     int returnAux = -1;
+    void* elemento;
+    int tam;
+    elemento = NULL;
+    if(this != NULL)
+    {
+    	tam = ll_len(this);
+    	returnAux = 0;
+    	for(int i = 0; i < tam; i++)
+    	{
+    		elemento = ll_get(this, i);
+    		if(elemento == pElement)
+    		{
+    			returnAux = 1;
+    			break;
+    		}
+    	}
+    }
 
     return returnAux;
 }
@@ -461,6 +479,27 @@ int ll_contains(LinkedList* this, void* pElement)
 int ll_containsAll(LinkedList* this,LinkedList* this2)
 {
     int returnAux = -1;
+    int tam;
+    void* elemento;
+    elemento = NULL;
+    if(this!= NULL && this2 != NULL)
+    {
+    	tam = ll_len(this2);
+    	returnAux = 1;
+    	for(int i = 0; i < tam; i++)
+    	{
+    		elemento = ll_get(this2, i);
+    		if(ll_contains(this, elemento) == 0)
+    		{
+				returnAux = 0;
+				break;
+    		}
+
+
+    	}
+
+    }
+
 
     return returnAux;
 }
