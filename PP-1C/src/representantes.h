@@ -78,11 +78,41 @@ sRepresentantes generarRepresentante();
  * @return 1 todo ok, -1 error
  */
 int altaRepresentante(sRepresentantes representantes[], int tamRepresentantes);
-
+/**
+ * @brief menu de representantes con switch y control de estado (si puedo modificar o no)
+ *
+ * @param representantes
+ * @param tamRepresentantes
+ * @return
+ */
 int modificarUnRepresentante(sRepresentantes representantes[], int tamRepresentantes);
 
+/**
+ * @brief modifico nombre del representante
+ *
+ * @param Representante
+ * @return
+ */
 sRepresentantes representantes_ModificarNombre(sRepresentantes Representante);
+/**
+ * @brief modifico apellido del representante
+ *
+ * @param Representante
+ * @return
+ */
 sRepresentantes representantes_ModificarApellido(sRepresentantes Representante);
+/**
+ * @brief modifico Descripción del representante
+ *
+ * @param Representante
+ * @return
+ */
 sRepresentantes representantes_ModificarDescripcion(sRepresentantes Representante);
+/**
+ * @brief modifico honorarios(cuanto cobra)  del representante
+ *
+ * @param Representante
+ * @return
+ */
 sRepresentantes representantes_ModificarHonorarios(sRepresentantes Representante);
 #endif

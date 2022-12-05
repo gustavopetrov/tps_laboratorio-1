@@ -64,7 +64,7 @@ void menu_Perfil_Administrador(sFiguritas figuritas[], int cantFiguritas, sClub 
 
 static int GenerarID(void);
 static int GenerarID(void){
-	static int idIncremental = 25;
+	static int idIncremental = 55;
 
 	return idIncremental++;
 }
@@ -179,6 +179,9 @@ void figurita_MostrarUna(sFiguritas unaFigurita,sClub clubes[],int tamClub,sSele
 		printf(" %-11d |",unaFigurita.anioIngreso);
 		printf(" %d/%d/%d \t     |",unaFigurita.fechaNacimiento.dia,unaFigurita.fechaNacimiento.mes,unaFigurita.fechaNacimiento.anio);
 
+	}else
+	{
+		puts("ERROR");
 	}
 
 }
@@ -608,12 +611,6 @@ int representantes_sortHonorarios(sFiguritas figurita[],int tamFiguritas, sClub 
 
 	return retorno;
 }
-
-
-
-
-
-
 
 /*----------------------------FIN-SORT----------------------------*/
 

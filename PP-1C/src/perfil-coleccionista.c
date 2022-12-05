@@ -183,7 +183,6 @@ sAlbum comprarPaquete(sAlbum album,sRepetidas figuritasRepetidas[], sFiguritas f
 	for(int i = 0; i < CANT_FIGURITAS_SOBRE; i++)
 	{
 		paqueteFiguritas[i] = generarNumeroRandom(1, CANT_FIGURITAS);
-		printf("\nFigurita: %d",paqueteFiguritas[i]);
 		contadorFiguritas++;
 		if(contadorFiguritas % 50 == 0)
 		{
@@ -198,7 +197,7 @@ sAlbum comprarPaquete(sAlbum album,sRepetidas figuritasRepetidas[], sFiguritas f
 			}
 		}
 	}
-	// ya tengo los 5 ids
+
 	for(int i = 0; i < CANT_FIGURITAS_SOBRE; i++)
 	{
 		album = pegarFigurita(figuritas, cantFiguritas, album, figuritasRepetidas, paqueteFiguritas[i]);

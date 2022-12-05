@@ -77,10 +77,35 @@ sClub generarClub();
  */
 int altaClub(sClub clubes[], int tamClub);
 
+/**
+ * @brief menu de modificar clubs es un switch que verifica si se puede modificar con un flag
+ *
+ * @param clubes
+ * @param tamClub
+ * @return
+ */
 int modificarUnClub(sClub clubes[],int tamClub);
 
+/**
+ * @brief modifico nombre del club
+ *
+ * @param Club
+ * @return
+ */
 sClub clubes_ModificarNombre(sClub Club);
+/**
+ * @brief modifico descripción del club
+ *
+ * @param Club
+ * @return
+ */
 sClub clubes_ModificarDescripcion(sClub Club);
+/**
+ * @brief modifico año de creación del club
+ *
+ * @param Club
+ * @return
+ */
 sClub clubes_ModificaranioCreacion(sClub Club);
 
 #endif
