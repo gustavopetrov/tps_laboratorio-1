@@ -36,6 +36,24 @@ int esNumericaBuffer(char* string){
     return retorno;
 }
 
+int esNumericaInt(char* string)
+{
+	int retorno;
+	int i;
+	retorno = 1;
+
+	for( ; string[i] != '\0'; i++)
+	{
+		if( (string[i] > '9' || string[i] < '0') )
+		{
+			retorno = 0;
+		    break;
+		}
+	}
+
+	return retorno;
+}
+
 
 /*-------getInt-------*/
 int getInt(int* pResultado, char* mensaje, char* mensajeError, int min, int max){
@@ -168,7 +186,7 @@ int getShort(short* pResultado, char* mensaje, char* mensajeError, short min, sh
 			printf("%s", mensaje);
 			scanf("%s", buffer);
 
-			if(esNumericaBuffer(buffer)){
+			if(esNumericaInt(buffer)){
 				numero = atoi(buffer);
 
 				if(numero >= min && numero <= max){

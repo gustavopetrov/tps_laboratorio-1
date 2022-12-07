@@ -24,14 +24,21 @@ int main(void) {
 	eConfederacion_Inicializar(Confederacion, TAM_Confederacion);
 
 
-	Jugador[0] = eJugador_cargaPrueba("Gustavo Petrov", "Delantero", 10, 105, 50000, 2);
-	Jugador[1] = eJugador_cargaPrueba("Armando Esteban Quito", "Defensor", 1, 103, 20000, 5);
-	Jugador[2] = eJugador_cargaPrueba("Ricardo", "Arquero", 1, 102, 50000, 4);
-	Jugador[3] = eJugador_cargaPrueba("Sergio Agüero", "Delantero", 1, 101, 40000, 8);
-	Jugador[4] = eJugador_cargaPrueba("Megaman", "Delantero", 7, 101, 60000, 9);
-	Jugador[5] = eJugador_cargaPrueba("Araceli López", "Defensor", 40, 100, 70000, 10);
-	Jugador[6] = eJugador_cargaPrueba("ZubZero", "Defensor", 40, 101, 70000, 10);
-	Jugador[7] = eJugador_cargaPrueba("Bruno", "Defensor", 40, 104, 70000, 10);
+	Jugador[1] = eJugador_cargaPrueba("Emiliano Martinez", "ARQUERO", 1, 100, 100000, 4);
+	Jugador[2] = eJugador_cargaPrueba("Juan Musso", "ARQUERO", 12, 100, 80000, 2);
+	Jugador[3] = eJugador_cargaPrueba("Leo Messi", "DELANTERO", 10, 100, 80000, 4);
+	Jugador[4] = eJugador_cargaPrueba("Almirez Ali", "DELANTERO", 9, 100, 55000, 1);
+	Jugador[5] = eJugador_cargaPrueba("Harry Maguire", "DEFENSOR", 2, 101, 70000, 4);
+	Jugador[6] = eJugador_cargaPrueba("Eric Dier", "DEFENSOR", 3, 101, 60000, 2);
+	Jugador[7] = eJugador_cargaPrueba("Harry Kane", "DELANTERO", 10, 101, 3000, 2);
+	Jugador[8] = eJugador_cargaPrueba("Alfred Gomis", "ARQUERO", 1, 101, 9000, 1);
+	Jugador[9] = eJugador_cargaPrueba("Abdelkarim Hassan", "MEDIOCAMPISTA", 8, 101, 48000, 1);
+	Jugador[10] = eJugador_cargaPrueba("Guillermo Ochoa", "ARQUERO", 1, 104, 90000, 4);
+	Jugador[11] = eJugador_cargaPrueba("Tecatito", "DELANTERO", 11, 104, 100000, 3);
+	Jugador[12] = eJugador_cargaPrueba("Luis Romo", "MEDIOCAMPISTA", 7, 104, 100000, 2);
+	Jugador[13] = eJugador_cargaPrueba("Bamba Dieng", "DELANTERO", 9, 103, 100000, 2);
+	Jugador[14] = eJugador_cargaPrueba("Demba Seck", "DELANTERO", 11, 103, 6000, 2);
+	Jugador[15] = eJugador_cargaPrueba("Tarek Salman", "DEFENSOR", 6, 102, 78000, 5);
 
 	Confederacion[0] = eConfederacion_cargaPrueba("CONMEBOL","SUDAMERICA",1916);
 	Confederacion[1] = eConfederacion_cargaPrueba("UEFA","EUROPA",1954);
@@ -50,11 +57,10 @@ int main(void) {
 				"\n4.Menú Listados..."
 				"\n5.Salir... ", "\nError!", 1, 6);
 
-		//MENU SWITCH
 		switch (option)
 		{
 		case 5:
-			/** PREGUNTAR SI DESEA SALIR */
+
 			getInt(&option, "\nDesea salir?"
 					"\n1.Sí."
 					"\n2.No.", "\nError!", 1, 2);
@@ -112,7 +118,7 @@ int main(void) {
 				switch(option)
 				{
 				case 1:
-					//ORDENAR Producto
+
 					criterioDeOrdenamiento = -1; //PEDIR CRITERIO DE ORDENAMIENTO
 					getInt(&criterioDeOrdenamiento, "\nCriterio de ordenamiento:"
 							"\n -1 -> ordenamiento ascendente (Menor a Mayor) "
@@ -138,7 +144,6 @@ int main(void) {
 				case 3:
 					eJugador_ContarJugadores(Jugador, TAM_Jugador);
 					acumularSalariosTotales(Jugador, TAM_Jugador);
-					promedioSalario(Jugador, TAM_Jugador);
 					obtenerJugadoresConSalarioMaximo(Jugador, TAM_Jugador);
 					system("pause");
 					break;
@@ -162,7 +167,7 @@ int main(void) {
 		}
 		else
 		{
-			puts("No hay jugadores/confederaciones cargados");
+			puts("\t**No hay jugadores cargados**");
 		}
 			break;
 		}

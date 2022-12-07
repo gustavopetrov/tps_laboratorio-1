@@ -5,3 +5,4 @@ int getStringAlpha(char string[], int sizeString, char* mensaje, char* mensajeEr
 int getShort(short* pResultado, char* mensaje, char* mensajeError, short min, short max);
 int getString(char string[], int sizeString, char* mensaje, char* mensajeError);
 int esNumericaBuffer(char* string);
+int esNumericaInt(char* string);

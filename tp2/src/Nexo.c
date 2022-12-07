@@ -22,7 +22,6 @@ void eJugador_MostrarUno(eJugador Jugador,eConfederacion Confederacion[], int TA
 			}
 		}
 	}
-
 	//PRINTF DE UN SOLO Jugador
 	printf("\t|%6d", Jugador.idJugador);
 	printf("|%23s",Jugador.nombre);
@@ -44,22 +43,15 @@ int eJugador_MostrarTodos(eJugador array[], int TAM,eConfederacion arrayConfeder
 	puts("\t==================================================================================================================");
 	printf("\t|%5s | %21s | %17s | %14s | %14s | %10s | %14s|\n", "ID", "Nombre", "Posicion", "NroCamiseta", "Confederacion", "Salario", "AñoContratos");
 	puts("\t------------------------------------------------------------------------------------------------------------------");
-	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
 	if (array != NULL && TAM > 0) {
-		//RECORRO TODO EL ARRAY
 		for (i = 0; i < TAM; i++) {
-			//PREGUNTO POR SU ESTADO "OCUPADO"
 			if (array[i].isEmpty == OCUPADO) {
-				//MUESTRO UN SOLO Jugador
 				eJugador_MostrarUno(array[i],arrayConfederaciones,TAM_Confederacion);
-				//CONTADOR DE Jugador
 				cantidad++;
 			}
 		}
 		puts("\t==================================================================================================================");
 	}
-
-	//SI CANTIDAD == 0 - NO HUBO Jugador PARA MOSTRAR (ARRAY SIN ALTAS)
 	if (cantidad > 0) {
 		rtn = 1;
 	}
@@ -73,26 +65,16 @@ int eJugador_MostrarDadosDeBaja(eJugador array[], int TAM,eConfederacion arrayCo
 	int rtn = 0;
 	int cantidad = 0;
 
-	//CABECERA
 	puts("\t> Jugador\n");
-//	printf("%5s\n\n", "ID"); //AGREGAR TITULOS DE COLUMNA (QUITAR DE VER QUE NO ES NECESARIO)
 	printf("\t|  %5s | %20s | %16s | %13s | %13s | %11s | %13s  |\n", "ID", "Nombre", "Posicion", "NumCamiseta", "Confederacion", "Salario", "AñoContratos");
-
-	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
 	if (array != NULL && TAM > 0) {
-		//RECORRO TODO EL ARRAY
 		for (i = 0; i < TAM; i++) {
-			//PREGUNTO POR SU ESTADO "BAJA"
 			if (array[i].isEmpty == BAJA) {
-				//MUESTRO UN SOLO Jugador
 				eJugador_MostrarUno(array[i],arrayConfederaciones,TAM_Confederacion);
-				//CONTADOR DE Jugador
 				cantidad++;
 			}
 		}
 	}
-
-	//SI CANTIDAD == 0 - NO HUBO Jugador PARA MOSTRAR (ARRAY SIN BAJAS)
 	if (cantidad > 0) {
 		rtn = 1;
 	}
@@ -104,34 +86,32 @@ eJugador eJugador_CargarDatos(eConfederacion array[], int TAM)
 	eJugador auxiliar;
 	int idConfederacionAux;
 
-	getString(auxiliar.nombre, 50, "\nIngrese Nombre Jugador", "\nError!");
-	getString(auxiliar.posicion,50, "\nIngrese Posicion Jugador", "\nError!");
+	getString(auxiliar.nombre, 50, "\nIngrese Nombre Jugador\n>>", "\nError!\n");
+	getString(auxiliar.posicion,50, "\nIngrese Posicion Jugador\n>>", "\nError!\n");
 	while(stricmp(auxiliar.posicion,"Arquero") && stricmp(auxiliar.posicion,"Defensor") && stricmp(auxiliar.posicion,"MedioCampista") && stricmp(auxiliar.posicion,"Delantero") )
 	{
 		getString(auxiliar.posicion,50, "\nIngrese una de las siguientes posiciones para el jugador: "
-				"\nArquero"
-				"\nDefensor"
-				"\nMedioCampista"
-				"\nDelantero", "\nError!");
+				"\n>>Arquero"
+				"\n>>Defensor"
+				"\n>>MedioCampista"
+				"\n>>Delantero", "\nError!");
 	}
-	getShort(&auxiliar.numeroCamiseta, "\nIngrese Numero Camiseta", "\nError!", 1, 99);
+	getShort(&auxiliar.numeroCamiseta, "\nIngrese Numero Camiseta\n>> ", "\nError!", 1, 99);
 	//Listo las confederaciones
 	eConfederacion_MostrarTodos(array, TAM);
-	// validar que exista el ID de confederacion
-	getInt(&idConfederacionAux, "\nIngrese Confederación", "\nError!", 100, 1000);
+	getInt(&idConfederacionAux, "\nIngrese Confederación\n>>  ", "\nError!\n", 100, 105);
 	while(verificarID_Confederaciones(array,TAM,idConfederacionAux) == 0)
 	{
-		getInt(&idConfederacionAux, "\nIngrese Confederación", "\nError!", 100, 1000);
+		getInt(&idConfederacionAux, "\nIngrese Confederación\n>> ", "\nError!", 100, 105);
 	}
 	auxiliar.idConfederacion = idConfederacionAux;
-	getFloat(&auxiliar.salario, "\nIngrese Salario Jugador", "\nError!", 10000, 1000000);
-	getShort(&auxiliar.aniosContrato, "\nIngrese años de contrato", "\nError!", 1, 10);
+	getFloat(&auxiliar.salario, "\nIngrese Salario Jugador, de 1000 a 9000000\n>> ", "\nError!", 1000, 9000000);
+	getShort(&auxiliar.aniosContrato, "\nIngrese años de contrato, de 1 a 15\n>> ", "\nError!", 1, 15);
 
 
 	return auxiliar;
 }
 
-// Verifico que el id que me ingresa en el ALTA exista en el array de confederaciones
 int verificarID_Confederaciones(eConfederacion array[], int TAM, int id)
 {
 	int rta;
@@ -155,10 +135,10 @@ eJugador eJugador_ModificarConfederacion(eJugador Jugador, eConfederacion confed
 	int idConfederacionAux;
 	eConfederacion_MostrarTodos(confederacion, TAM_Confederacion);
 	// validar que exista el ID de confederacion
-	getInt(&idConfederacionAux, "\nIngrese nueva Confederación", "\nError!", 100, 1000);
+	getInt(&idConfederacionAux, "\nIngrese nueva Confederación\n>> ", "\nError!", 100, 105);
 	while(verificarID_Confederaciones(confederacion,TAM_Confederacion,idConfederacionAux) == 0)
 	{
-		getInt(&idConfederacionAux, "\nIngrese nueva Confederación", "\nError!", 100, 1000);
+		getInt(&idConfederacionAux, "\nIngrese nueva Confederación\n>> ", "\nError!", 100, 105);
 	}
 	auxiliar.idConfederacion = idConfederacionAux;
 	return auxiliar;
@@ -170,22 +150,13 @@ int eJugador_Alta(eJugador array[], int TAM, eConfederacion arrayConfederacion[]
 	int rtn = 0;
 	eJugador auxJugador;
 
-	//BUSCO ESPACIO EN ARRAY
 	int index = eJugador_ObtenerIndexLibre(array, TAM);
-
-	//SI INDEX == -1 ARRAY LLENO
-	//SI INDEX != -1 TENGO EN INDEX POSICION DE ARRAY LIBRE
-	if (index != -1) {
-		//PIDO DATOS - CARGO Jugador AUXILIAR
+	if (index != -1)
+	{
 		auxJugador = eJugador_CargarDatos(arrayConfederacion,TAMconfederacion);
-		//SETEO ID UNICO - VARIABLE ESTATICA AUTOINCREMENTAL
 		auxJugador.idJugador = jugador_ObtenerID();
-		//CAMBIO SU ESTADO A "OCUPADO"
 		auxJugador.isEmpty = OCUPADO;
-		//SETEO EL ARRAY CON AUXILIAR EN INDEX LIBRE OBTENIDO PREVIAMENTE
 		array[index] = auxJugador;
-
-		//RETORNO 1 PARA SABER QUE FUE DADO DE ALTA SATISFACTORIAMENTE
 		rtn = 1;
 	}
 
@@ -199,36 +170,21 @@ int eJugador_Baja(eJugador array[], int TAM,eConfederacion arrayConfederaciones[
 	int index;
 	int flag = 0;
 
-	//LISTO TODOS LOS Jugador
-	if (eJugador_MostrarTodos(array, TAM,arrayConfederaciones,TAM_Confederacion)) {
-		//BANDERA EN 1 SI HAY Jugador DADOS DE ALTA PARA LISTAR
+	if (eJugador_MostrarTodos(array, TAM,arrayConfederaciones,TAM_Confederacion))
+	{
 		flag = 1;
 	}
-
-	//SI HAY Jugador PARA DAR DE BAJA
 	if (flag) {
-		//PIDO ID A DAR DE BAJA
-		/**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
 		printf("INGRESE ID A DAR DE BAJA: ");
 		scanf("%d", &idJugador);
-
-		//BUSCO INDEX POR ID EN ARRAY
 		while (eJugador_BuscarPorID(array, TAM, idJugador) == -1) {
 			puts("NO EXISTE ID.");
-
-			/**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
 			printf("INGRESE ID A DAR DE BAJA: ");
 			scanf("%d", &idJugador);
 		}
 
-		//OBTENGO INDEX DEL ARRAY DE Jugador A DAR DE BAJA
 		index = eJugador_BuscarPorID(array, TAM, idJugador);
-
-		/**PREGUNTAR SI DESEA CONTINUAR*/
-		//BAJA ACEPTADA - CAMBIO ESTADO A "BAJA"
 		array[index].isEmpty = BAJA;
-
-		//RETORNO 1 SI SE DIO DE BAJA CORRECTAMENTE
 		rtn = 1;
 	}
 
@@ -244,28 +200,20 @@ int eJugador_Modificacion(eJugador array[], int TAM,eConfederacion arrayConfeder
 	int flag = 0;
 	eJugador auxiliar;
 
-	//LISTO TODOS LOS Jugador
 	if (eJugador_MostrarTodos(array, TAM, arrayConfederaciones,TAM_Confederacion)) {
-		//BANDERA EN 1 SI HAY Jugador DADOS DE ALTA PARA LISTAR
 		flag = 1;
 	}
-
-	//SI HAY Jugador PARA MODIFICAR
 	if (flag)
 	{
-		//PIDO ID A MODIFICAR
-		getInt(&idJugador, "\nID jugador a modificar", "\nERROR!", 0, 3000);
-		//BUSCO INDEX POR ID EN ARRAY
-		while (eJugador_BuscarPorID(array, TAM, idJugador) == -1) {
+		getInt(&idJugador, "\nID jugador a modificar\n>> ", "\nERROR!\n", 1, 3000);
+		while (eJugador_BuscarPorID(array, TAM, idJugador) == -1)
+		{
 			puts("NO EXISTE ID.");
-
-			/**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
-			printf("INGRESE ID A DAR DE BAJA: ");
-			getInt(&idJugador, "\nID jugador a modificar", "\nERROR!", 0, 3000);
+			printf("INGRESE ID A DAR DE BAJA ");
+			getInt(&idJugador, "\nID jugador a modificar\n>> ", "\nERROR\n!", 1, 3000);
 		}
-
-		//OBTENGO INDEX DEL ARRAY DE Jugador A MODIFICAR
 		index = eJugador_BuscarPorID(array, TAM, idJugador);
+		auxiliar = array[index];
 		do
 		{
 			getInt(&option, "\nID jugador a modificar"
@@ -275,47 +223,34 @@ int eJugador_Modificacion(eJugador array[], int TAM,eConfederacion arrayConfeder
 									"\n4.Modificar Confederación"
 									"\n5.Modificar Salario"
 									"\n6.Modificar Contrato"
-									"\n7.Salir \n", "\nERROR!", 0, 3000);
+									"\n7.Salir \n", "\nERROR!", 1, 7);
 				switch(option)
 				{
 					case 1:
-						printf("\nModificar Nombre: \n");
-						auxiliar = eJugador_ModificarNombre(array[index]);
+						auxiliar = eJugador_ModificarNombre(auxiliar);
 						break;
 					case 2:
-						printf("\nModificar Posición: \n");
-						auxiliar = eJugador_ModificarPosicion(array[index]);
+						auxiliar = eJugador_ModificarPosicion(auxiliar);
 						break;
 					case 3:
-						printf("\nModificar Numero Camiseta: \n");
-						auxiliar = eJugador_ModificarNumeroCamiseta(array[index]);
+						auxiliar = eJugador_ModificarNumeroCamiseta(auxiliar);
 						break;
 					case 4:
-						printf("\nModificar Confederación: \n");
-						auxiliar = eJugador_ModificarConfederacion(array[index],arrayConfederaciones, TAM_Confederacion);
+						auxiliar = eJugador_ModificarConfederacion(auxiliar,arrayConfederaciones, TAM_Confederacion);
 						break;
 					case 5:
-						printf("\nModificar Salario: \n");
-						auxiliar = eJugador_ModificarSalario(array[index]);
+						auxiliar = eJugador_ModificarSalario(auxiliar);
 						break;
 					case 6:
-						printf("\nModificar Contrato: \n");
-						auxiliar = eJugador_ModificarContrato(array[index]);
+						auxiliar = eJugador_ModificarContrato(auxiliar);
 						break;
 					case 7:
 						break;
 				}
 					}while(option != 7);
 
-		//LLAMO A FUNCION QUE MODIFICA Jugador
-
-		/**PREGUNTAR SI DESEA CONTINUAR*/
-		//MODIFICACION ACEPTADA
 		array[index] = auxiliar;
-
-		//RETORNO 1 SI SE MODIFICO CORRECTAMENTE
 		rtn = 1;
-	//llave del if flag
 	}
 
 	return rtn;
@@ -329,7 +264,6 @@ int mostrarTodosLosJugadoresDeUnaConfederacion(eJugador array[], int TAM, eConfe
 	cantidad = 0;
 	puts("\n\t> LISTADO Jugador");
 	printf("\t|%5s | %21s | %17s | %14s | %14s | %10s | %14s|\n", "ID", "Nombre", "Posicion", "NroCamiseta", "Confederacion", "Salario", "AñoContratos");
-	//Si existen los array y los límites son válidos
 	if(array != NULL && TAM > 0 && arrayConfederacion != NULL && TAM_Confederacion > 0)
 	{
 		for(int i = 0; i < TAM_Confederacion; i++)
@@ -362,81 +296,66 @@ int mostrarTodosLosJugadoresDeUnaConfederacion(eJugador array[], int TAM, eConfe
 int eJugador_Sort(eJugador array[], int TAM, int criterio, eConfederacion arrayConfederacion[], int TAM_Confederacion)
 {
 	int rtn = 0;
-	int i;
-	int j;
-	int x;
-	int z;
-	eJugador aux;
+	eJugador auxJugador;
 	eConfederacion auxConfederacion;
 
-	/** EJEMPLO DE SORT CON ID DE Jugador
-	    MODIFICAR "CRITERIO DE ORDENAMIENTO" PARA OTROS CASOS DE ORDENAMIENTO
-	    CASE -1 -> MENOR A MAYOR (ASCENDENTE)
-	    CASE  1 -> MAYOR A MENOR (DESCENDENTE)
-	    UTILIZAR strcmp(...) PARA COMPARAR CADENAS
-	*/
-
-	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
 	if (array != NULL && TAM > 0) {
 		switch (criterio) {
 		case -1:
-			//Ordeno jugadores alfabeticamente
-			for (i = 0; i < TAM - 1; i++) {
-				for (j = i + 1; j < TAM; j++) {
-					//PREGUNTO POR ESTADO "OCUPADO" DE AMBOS
-					if (array[i].isEmpty == OCUPADO
-							&& array[j].isEmpty == OCUPADO) {
-						//CRITERIO DE ORDENAMIENTO
-						if (stricmp(array[i].nombre,array[j].nombre) > 0) {
-							//INTERCAMBIO POSICIONES EN ARRAY
-							aux = array[i];
-							array[i] = array[j];
-							array[j] = aux;
-						}
+			for(int i = 0; i < TAM - 1; i++)
+			{
+				for(int j = i + 1; j < TAM; j++)
+				{
+					if(stricmp(array[i].nombre,array[j].nombre) > 0)
+					{
+						auxJugador = array[i];
+						array[i] = array[j];
+						array[j] = auxJugador;
 					}
 				}
 			}
-			// segundo for para ordenar por confederacion
-			for(x = 0; x < TAM_Confederacion - 1; x++)
+			for(int x = 0; x < TAM_Confederacion - 1; x++)
 			{
-				for(z = x + 1; z < TAM_Confederacion; z++)
+				for(int z = x + 1; z < TAM_Confederacion; z++)
 				{
-					//Pregunto por el estado "OCUPADO" de ambos
-					if(arrayConfederacion[x].isEmpty == OCUPADO
-							&& arrayConfederacion[z].isEmpty == OCUPADO)
-					//Criterio de ordenamiento
+					if( stricmp(arrayConfederacion[x].nombre,arrayConfederacion[z].nombre) > 0)
 					{
-						if(stricmp(arrayConfederacion[x].nombre,arrayConfederacion[z].nombre) > 0)
-						{
-							auxConfederacion = arrayConfederacion[x];
-							arrayConfederacion[x] = arrayConfederacion[z];
-							arrayConfederacion[z] = auxConfederacion;
-						}
+						auxConfederacion = arrayConfederacion[x];
+						arrayConfederacion[x] = arrayConfederacion[z];
+						arrayConfederacion[z] = auxConfederacion;
 					}
 				}
 			}
 			rtn = 1;
 			break;
 		case 1:
-			for (i = 0; i < TAM - 1; i++) {
-				for (j = i + 1; j < TAM; j++) {
-					//PREGUNTO POR ESTADO "OCUPADO" DE AMBOS
-					if (array[i].isEmpty == OCUPADO
-							&& array[j].isEmpty == OCUPADO) {
-						//CRITERIO DE ORDENAMIENTO
-						if (array[i].idJugador < array[j].idJugador) {
-							//INTERCAMBIO POSICIONES EN ARRAY
-							aux = array[i];
-							array[i] = array[j];
-							array[j] = aux;
-						}
+			for(int i = 0; i < TAM - 1; i++)
+			{
+				for(int j = i + 1; j < TAM; j++)
+				{
+					if(stricmp(array[i].nombre,array[j].nombre) < 0)
+					{
+						auxJugador = array[i];
+						array[i] = array[j];
+						array[j] = auxJugador;
+					}
+				}
+			}
+			for(int x = 0; x < TAM_Confederacion - 1; x++)
+			{
+				for(int z = x + 1; z < TAM_Confederacion; z++)
+				{
+					if(stricmp(arrayConfederacion[x].nombre,arrayConfederacion[z].nombre) < 0)
+					{
+						auxConfederacion = arrayConfederacion[x];
+						arrayConfederacion[x] = arrayConfederacion[z];
+						arrayConfederacion[z] = auxConfederacion;
 					}
 				}
 			}
 			rtn = 1;
 			break;
 		default:
-			//CRITERIO DE ORDENAMIENTO MAL INGRESADO
 			rtn = 0;
 			break;
 		}
@@ -532,7 +451,6 @@ void listarJugadoresRegion(eJugador arrayJugadores[], int TAM_Jugador, eConfeder
 			{
 				if( stricmp(arrayConfederaciones[i].nombre,region) == 0)
 				{
-					// for para recorrer el arr de jugadores y printear los que match con el id de esta confederacion[i]
 					for(j = 0; j < TAM_Jugador; j++)
 					{
 						if(arrayJugadores[j].isEmpty == OCUPADO)
@@ -592,7 +510,7 @@ void regionConMasJugadores(eJugador arrayJugadores[], int TAM_Jugador, eConfeder
 					}
 					contadorJugadores = 0;
 				}
-				printf("\nLa región con más jugadores es: %s\n",regionAuxiliar);
+				printf("\n\nLa región con más jugadores es: %s\n",regionAuxiliar);
 				listarJugadoresRegion(arrayJugadores, TAM_Jugador, arrayConfederaciones, TAM_Confederacion, regionAuxiliar);
 			}
 }
